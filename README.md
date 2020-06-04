@@ -1,4 +1,3 @@
-<br>
 
 <h1 align="center">Minuki</h1>
 <div align="center">
@@ -9,7 +8,6 @@
     
 </div>
 
-<br>
 
 ## Install
 -   Install [Python](https://www.python.org/downloads/) 
