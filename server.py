@@ -25,5 +25,12 @@ async def send_welcome(message: types.Message):
         "Categories of expenses: /categories")
 
 
+# @dp.message_handler()
+# async def add_expense(message: types.Message):
+#     """Adds new expense"""
+#     try:
+#         expense =
+
+
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
