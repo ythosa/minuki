@@ -1,6 +1,6 @@
 import datetime
 import re
-from typing import NamedTuple, Optional
+from typing import NamedTuple, Optional, List
 import pytz
 
 import db
@@ -40,20 +40,38 @@ def add_expense(raw_message: str) -> Expense:
     )
 
 
+def last() -> List[Expense]:
+    """Returns the last few expenses"""
+    cursor = db.get_cursor()
+    cursor.execute(
+        "select e.id, e.amount, c.name "
+        "from expense e left join category c "
+        "on c.codename=e.category_codename "
+        "order by created desc limit 10"
+    )
+    rows = cursor.fetchall()
+    last_expenses = [Expense(id=row[0], amount=row[1], category_name=row[2]) for row in rows]
+    return last_expenses
+
+
 def get_today_statistics() -> str:
     """Returns a string of expense statistics for today"""
     cursor = db.get_cursor()
-    cursor.execute("select sum(amount)"
-                   "from expense where date(created)=date('now', 'localtime')")
+    cursor.execute(
+        "select sum(amount)"
+        "from expense where date(created)=date('now', 'localtime')"
+    )
     result = cursor.fetchone()
     if not result[0]:
         return "Today there are no expenses yet"
     all_today_expenses = result[0]
 
-    cursor.execute("select sum(amount) "
-                   "from expense where date(created)=date('now', 'localtime') "
-                   "and category_codename in (select codename "
-                   "from category where is_base_expense=true)")
+    cursor.execute(
+        "select sum(amount) "
+        "from expense where date(created)=date('now', 'localtime') "
+        "and category_codename in (select codename "
+        "from category where is_base_expense=true)"
+    )
     result = cursor.fetchone()
     base_today_expenses = result[0] if result[0] else 0
 

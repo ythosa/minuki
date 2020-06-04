@@ -36,6 +36,24 @@ async def categories_list(message: types.Message):
     await message.answer(answer_message)
 
 
+@dp.message_handler(commands=['expenses'])
+async def expenses_list(message: types.Message):
+    """Sends the last few records on the costs"""
+    last_expenses = expenses.last()
+    if not last_expenses:
+        await message.answer("")
+        return
+
+    last_expenses_row = [
+        f"{expense.amount} rub. of {expense.category_name} — press "
+        f"/del{expense.id} for removal"
+        for expense in last_expenses
+    ]
+
+    answer_message = "Last saved expenses:\n\n* " + "\n\n* ".join(last_expenses_row)
+    await message.answer(answer_message)
+
+
 @dp.message_handler(commands=['today'])
 async def today_statistics(message: types.Message):
     """Sends today's spending statistics"""
@@ -45,6 +63,7 @@ async def today_statistics(message: types.Message):
 
 @dp.message_handler(commands=['month'])
 async def month_statistics(message: types.Message):
+    """Sends spending statistics for the current month"""
     answer_message = expenses.get_month_statistics()
     await message.answer(answer_message)
 
