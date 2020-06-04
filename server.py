@@ -54,10 +54,10 @@ async def expenses_list(message: types.Message):
     await message.answer(answer_message)
 
 
-@dp.message_handler(commands=['del'])
+@dp.message_handler(lambda message: message.text.startswith('/del'))
 async def delete_expense(message: types.Message):
     """Deletes a single expense record by its ID"""
-    row_id = int(message[4:])
+    row_id = int(message.text[4:])
     answer_message = expenses.delete_expense(row_id)
     await message.answer(answer_message)
 

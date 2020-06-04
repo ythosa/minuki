@@ -66,9 +66,9 @@ def delete_expense(row_id: int) -> str:
 
     if is_exist:
         db.delete("expense", row_id)
-        return "Removed"
+        return "Removed 👌"
     else:
-        return "Invalid command"
+        return "Invalid command ❌"
 
 
 def get_today_statistics() -> str:
