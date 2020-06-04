@@ -26,7 +26,7 @@ def add_expense(raw_message: str) -> Expense:
     parsed_message = _parse_message(raw_message)
     category = Categories().get_category(parsed_message.category_text)
 
-    inserted_row_id = db.insert("expense", {
+    db.insert("expense", {
         "amount": parsed_message.amount,
         "created": _get_now_formatted(),
         "category_codename": category.codename,
@@ -52,6 +52,23 @@ def last() -> List[Expense]:
     rows = cursor.fetchall()
     last_expenses = [Expense(id=row[0], amount=row[1], category_name=row[2]) for row in rows]
     return last_expenses
+
+
+def delete_expense(row_id: int) -> str:
+    """Deletes a single expense record by its ID"""
+    is_exist = False
+
+    expenses = last()
+    for expense in expenses:
+        if expense.id == row_id:
+            is_exist = True
+            break
+
+    if is_exist:
+        db.delete("expense", row_id)
+        return "Removed"
+    else:
+        return "Invalid command"
 
 
 def get_today_statistics() -> str:
