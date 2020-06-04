@@ -53,3 +53,20 @@ class Categories:
     def get_all_categories(self) -> List[Category]:
         """Returns reference of the categories"""
         return self._categories
+
+    def get_category(self, category_name: str) -> Category:
+        """Returns a category by one of its aliases"""
+        found = None
+        other_category = None
+
+        for category in self.get_all_categories():
+            if category.codename == "others":
+                other_category = category
+            for aliases in category.aliases:
+                if category_name in aliases:
+                    found = category
+
+        if not found:
+            found = other_category
+
+        return found

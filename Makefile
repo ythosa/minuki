@@ -4,7 +4,7 @@ build:
 
 .PHONY: sql
 sql:
-	c:/sqlite/sqlite3 finance.db < createdb.sql
+	C:/sqlite/sqlite3 ./db/finance.db < createdb.sql
 
 .PHONY: tokens
 tokens:
