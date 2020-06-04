@@ -43,6 +43,12 @@ async def today_statistics(message: types.Message):
     await message.answer(answer_message)
 
 
+@dp.message_handler(commands=['month'])
+async def month_statistics(message: types.Message):
+    answer_message = expenses.get_month_statistics()
+    await message.answer(answer_message)
+
+
 @dp.message_handler()
 async def add_expense(message: types.Message):
     """Adds new expense"""
@@ -53,7 +59,7 @@ async def add_expense(message: types.Message):
         return
 
     answer_message = (
-        f"Added expenses {expense.amount} rub. on {expense.category_name}.\n\n"
+        f"Added expenses {expense.amount} rub on {expense.category_name}.\n\n"
         f"{expenses.get_today_statistics()}"
     )
 

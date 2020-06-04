@@ -57,10 +57,44 @@ def get_today_statistics() -> str:
     result = cursor.fetchone()
     base_today_expenses = result[0] if result[0] else 0
 
-    return (f"Spending today:\n"
-            f"total — {all_today_expenses} rub.\n"
-            f"base — {base_today_expenses} rub. of {_get_budget_limit()} rub.\n\n"
-            f"For current month: /month")
+    return (
+        f"Spending today:\n"
+        f"Total — {all_today_expenses} rub\n"
+        f"Base — {base_today_expenses} rub of {_get_budget_limit()} rub\n\n"
+        f"For current month: /month"
+    )
+
+
+def get_month_statistics() -> str:
+    """Returns a string of expense statistics for the current month"""
+    now = _get_now_datetime()
+    first_day_of_month = f'{now.year:04d}-{now.month:02d}-01'
+
+    cursor = db.get_cursor()
+    cursor.execute(
+        f"select sum(amount) "
+        f"from expense where date(created) >= '{first_day_of_month}'"
+    )
+    result = cursor.fetchone()
+    if not result[0]:
+        return 'There are no expenses yet this month'
+    all_today_expenses = result[0]
+
+    cursor.execute(
+        f"select sum(amount) "
+        f"from expense where date(created) >= '{first_day_of_month}' "
+        f"and category_codename in (select codename "
+        f"from category where is_base_expense=true)"
+    )
+    result = cursor.fetchone()
+    base_today_expenses = result[0] if result[0] else 0
+
+    return (
+        f"Expenses in the current month:\n"
+        f"Total — {all_today_expenses} rub\n"
+        f"Base — {base_today_expenses} rub out of "
+        f"{now.day * _get_budget_limit()} rub"
+    )
 
 
 def _parse_message(raw_message: str) -> Message:

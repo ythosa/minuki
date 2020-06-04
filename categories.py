@@ -60,7 +60,7 @@ class Categories:
         other_category = None
 
         for category in self.get_all_categories():
-            if category.codename == "others":
+            if category.codename == "other":
                 other_category = category
             for aliases in category.aliases:
                 if category_name in aliases:
