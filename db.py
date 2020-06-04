@@ -14,7 +14,8 @@ def insert(table: str, column_values: Dict):
         f"INSERT INTO {table} "
         f"({columns}) "
         f"VALUES ({placeholders})",
-        values)
+        values
+    )
     conn.commit()
 
 
@@ -51,8 +52,10 @@ def _init_db():
 
 def check_db_exists():
     """Checks whether the database is initialized; if not, initializes it"""
-    cursor.execute("SELECT name FROM sqlite_master "
-                   "WHERE type='table' AND name='expense'")
+    cursor.execute(
+        "SELECT name FROM sqlite_master "
+        "WHERE type='table' AND name='expense'"
+    )
     table_exists = cursor.fetchall()
     if table_exists:
         return
