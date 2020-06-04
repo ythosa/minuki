@@ -4,7 +4,7 @@ from aiogram import Bot, Dispatcher, executor, types
 import logging
 
 import expenses
-from exceptions import NotCorrectMessage
+from exceptions import NotCorrectMessage, NotCorrectExpenseIDToDelete
 from middlewares import AccessMiddleware
 from tokens import API_TOKEN, ACCESS_ID
 
@@ -41,7 +41,7 @@ async def expenses_list(message: types.Message):
     """Sends the last few records on the costs"""
     last_expenses = expenses.last()
     if not last_expenses:
-        await message.answer("")
+        await message.answer("Expenses haven't been set up yet")
         return
 
     last_expenses_row = [
@@ -58,8 +58,14 @@ async def expenses_list(message: types.Message):
 async def delete_expense(message: types.Message):
     """Deletes a single expense record by its ID"""
     row_id = int(message.text[4:])
-    answer_message = expenses.delete_expense(row_id)
-    await message.answer(answer_message)
+
+    try:
+        expenses.delete_expense(row_id)
+    except NotCorrectExpenseIDToDelete as e:
+        await message.answer(str(e))
+        return
+
+    await message.answer("Removed 👌")
 
 
 @dp.message_handler(commands=['today'])

@@ -54,7 +54,7 @@ def last() -> List[Expense]:
     return last_expenses
 
 
-def delete_expense(row_id: int) -> str:
+def delete_expense(row_id: int):
     """Deletes a single expense record by its ID"""
     is_exist = False
 
@@ -66,9 +66,11 @@ def delete_expense(row_id: int) -> str:
 
     if is_exist:
         db.delete("expense", row_id)
-        return "Removed 👌"
     else:
-        return "Invalid command ❌"
+        raise exceptions.NotCorrectExpenseIDToDelete(
+            "Invalid expense id ❌\n"
+            "Write or press the /expenses to get a list of expenses that can be deleted :3"
+        )
 
 
 def get_today_statistics() -> str:
