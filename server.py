@@ -27,6 +27,15 @@ async def send_welcome(message: types.Message):
         "Categories of expenses: /categories")
 
 
+@dp.message_handler(commands=['categories'])
+async def categories_list(message: types.Message):
+    """Sends a list of expense categories"""
+    categories = expenses.Categories().get_all_categories()
+    answer_message = "Categories of expenses:\n\n* " + \
+                     "\n* ".join([c.name + ' (' + ", ".join(c.aliases) + ')' for c in categories])
+    await message.answer(answer_message)
+
+
 @dp.message_handler(commands=['today'])
 async def today_statistics(message: types.Message):
     """Sends today's spending statistics"""
@@ -44,7 +53,7 @@ async def add_expense(message: types.Message):
         return
 
     answer_message = (
-        f"Added expenses {expense.amount} rub on {expense.category_name}.\n\n"
+        f"Added expenses {expense.amount} rub. on {expense.category_name}.\n\n"
         f"{expenses.get_today_statistics()}"
     )
 
