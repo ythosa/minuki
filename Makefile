@@ -4,7 +4,7 @@ build:
 
 .PHONY: sql
 sql:
-	C:/sqlite/sqlite3 ./db/finance.db < createdb.sql
+	C:/sqlite/sqlite3 ./db/finance.db < createdb.sql # Version of linux to run it on ubuntu :)
 
 .PHONY: tokens
 tokens:
