@@ -5,6 +5,12 @@ build:
 .PHONY: sql
 sql:
 	C:/sqlite/sqlite3 ./db/finance.db < createdb.sql
+	
+.PHONY: ubuntu
+ubuntu:
+	echo "[infos]----->: Creation of DB with sql file-------- :"
+	sqlite3 /db/finance.db < createdb.sql
+	echo "[infos]----->: Done------------------------------ :"
 
 .PHONY: tokens
 tokens:
