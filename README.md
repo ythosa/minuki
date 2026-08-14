@@ -1,3 +1,5 @@
+
+
 <br>
 
 <h1 align="center">Minuki</h1>
@@ -13,7 +15,7 @@
 ## Install
 -   Install [Python](https://www.python.org/downloads/) 
 -   Clone this repo: `git clone https://github.com/Ythosa/minuki`
--   Install dependencies
+-   Install dependencies: `pip install aiogram pytz`
 -   Insert bot token and your ID in `API_TOKEN` and `ACCESS_ID` in `tokens.py`
 -   Done, you can run it by writing `make` command in your cmd :3
 
