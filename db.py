@@ -34,7 +34,7 @@ def fetchall(table: str, columns: List[str]) -> List[Dict[str, Any]]:
 
 def delete(table: str, row_id: int) -> None:
     row_id = int(row_id)
-    cursor.execute(f"delete from {table} where id={row_id}")
+    cursor.execute(f"delete from {table} where id = ?", (row_id,))
     conn.commit()
 
 
